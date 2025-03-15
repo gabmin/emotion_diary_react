@@ -17,6 +17,6 @@ export const getEmotionImage = (id: number) => {
     case 5:
       return emotion5;
     default:
-      return null;
+      return undefined;
   }
 };

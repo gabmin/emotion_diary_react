@@ -1,4 +1,4 @@
-import './button.css';
+import './Button.css';
 
 const Button = ({
   text,
@@ -10,9 +10,9 @@ const Button = ({
   onclick: () => void;
 }) => {
   return (
-    <div className={`button ${type}`} onClick={onclick}>
+    <button className={`button ${type}`} onClick={onclick}>
       {text}
-    </div>
+    </button>
   );
 };
 
