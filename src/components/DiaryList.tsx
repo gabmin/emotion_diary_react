@@ -18,9 +18,9 @@ const DiartList = ({ filteredData }: { filteredData: DiaryType[] }) => {
     return filteredData.toSorted((a, b) => {
       if (a.createdDate && b.createdDate) {
         if (sortType === 'oldest') {
-          return a.createdDate - b.createdDate;
+          return Number(a.createdDate) - Number(b.createdDate);
         }
-        return b.createdDate - a.createdDate;
+        return Number(b.createdDate) - Number(a.createdDate);
       }
       return 0;
     });

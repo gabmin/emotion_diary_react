@@ -7,8 +7,8 @@ const Header = ({
   rightChild,
 }: {
   title: string;
-  leftChild: JSX.Element;
-  rightChild: JSX.Element;
+  leftChild?: JSX.Element;
+  rightChild?: JSX.Element;
 }) => {
   return (
     <>

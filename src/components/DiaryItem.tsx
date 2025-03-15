@@ -11,9 +11,9 @@ const DiaryItem = ({ diary }: { diary: DiaryType }) => {
     <div className="diary-item">
       <div
         onClick={() => nav(`/diary/${diary.id}`)}
-        className={`img-section img-section_${diary.emtionId}`}
+        className={`img-section img-section_${diary.emotionId}`}
       >
-        <img src={getEmotionImage(diary.emtionId)}></img>
+        <img src={getEmotionImage(diary.emotionId)}></img>
       </div>
       <div onClick={() => nav(`/diary/${diary.id}`)} className="info-section">
         <div className="created-date">
