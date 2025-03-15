@@ -7,8 +7,8 @@ import Edit from './pages/Edit';
 import { Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Button from './components/button';
-import { useReducer } from 'react';
-import { DairyType } from './types/daiaryType';
+import { useReducer, useRef } from 'react';
+import { DiaryType, reducerDiaryType } from './types/daiaryType';
 
 const onClickPrev = () => {
   console.log('prev');
@@ -17,12 +17,59 @@ const onClicknext = () => {
   console.log('next');
 };
 
-const reducer = (state: DairyType[], action: any) => {
-  return state;
+const reducer = (state: DiaryType[], action: reducerDiaryType) => {
+  switch (action.type) {
+    case 'CREATE':
+      return [action.data, ...state];
+    case 'UPDATE':
+      return state.map((diary) =>
+        diary.id === action.data.id ? action.data : diary,
+      );
+    case 'DELETE':
+      return state.filter((diary) => diary.id !== action.data.id);
+
+    default:
+      return state;
+  }
 };
 
 function App() {
   const [data, dispatch] = useReducer(reducer, []);
+  const idRef = useRef(0);
+
+  const onCreate = (content: string, emtionId: number) => {
+    dispatch({
+      type: 'CREATE',
+      data: {
+        id: idRef.current++,
+        createdDate: new Date().getTime(),
+        emtionId,
+        content,
+      },
+    });
+  };
+
+  const onUpdate = (content: string, id: number, emtionId: number) => {
+    dispatch({
+      type: 'UPDATE',
+      data: {
+        id,
+        createdDate: new Date().getTime(),
+        emtionId,
+        content,
+      },
+    });
+  };
+
+  const onDelete = (id: number) => {
+    dispatch({
+      type: 'DELETE',
+      data: {
+        id,
+      },
+    });
+  };
+
   return (
     <>
       <Header

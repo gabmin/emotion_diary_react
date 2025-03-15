@@ -1,6 +1,11 @@
-export type DairyType = {
+export interface DiaryType {
   id: number;
-  createdDate: string;
-  emtionId: number;
-  content: string;
-};
+  createdDate?: number;
+  emtionId?: number;
+  content?: string;
+}
+
+export interface reducerDiaryType {
+  type: string;
+  data: DiaryType;
+}
