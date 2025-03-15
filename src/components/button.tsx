@@ -7,7 +7,7 @@ const Button = ({
 }: {
   text: string;
   type?: string;
-  onclick: () => void;
+  onclick: () => void | Promise<void>;
 }) => {
   return (
     <button className={`button ${type}`} onClick={onclick}>

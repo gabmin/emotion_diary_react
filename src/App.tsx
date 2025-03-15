@@ -27,8 +27,29 @@ const reducer = (state: DiaryType[], action: reducerDiaryType) => {
 export const DiaryStateContext = createContext<DiaryType[]>([]);
 export const DiaryDispatchContext = createContext({});
 
+const mockData = [
+  {
+    id: 0,
+    createdDate: new Date('2025-03-15').getTime(),
+    emtionId: 2,
+    content: '슬픈 날이네요',
+  },
+  {
+    id: 1,
+    createdDate: new Date('2025-02-15').getTime(),
+    emtionId: 1,
+    content: '아싸뵤!!',
+  },
+  {
+    id: 2,
+    createdDate: new Date('2025-03-17').getTime(),
+    emtionId: 4,
+    content: '개같네요',
+  },
+];
+
 function App() {
-  const [data, dispatch] = useReducer(reducer, []);
+  const [data, dispatch] = useReducer(reducer, mockData);
   const idRef = useRef(0);
 
   const onCreate = (content: string, emtionId: number) => {
@@ -76,7 +97,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/new" element={<New />}></Route>
-          <Route path="/dairy/:id" element={<Dairy />}></Route>
+          <Route path="/diary/:id" element={<Dairy />}></Route>
           <Route path="/edit/:id" element={<Edit />}></Route>
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
