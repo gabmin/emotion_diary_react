@@ -24,8 +24,8 @@ const reducer = (state: DiaryType[], action: reducerDiaryType) => {
   }
 };
 
-const DiaryStateContext = createContext<DiaryType[]>([]);
-const DiaryDispatchContext = createContext({});
+export const DiaryStateContext = createContext<DiaryType[]>([]);
+export const DiaryDispatchContext = createContext({});
 
 function App() {
   const [data, dispatch] = useReducer(reducer, []);

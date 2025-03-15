@@ -1,6 +1,5 @@
 import { JSX } from 'react';
 import './Header.css';
-import DiartList from './DiaryList';
 
 const Header = ({
   title,
@@ -18,7 +17,6 @@ const Header = ({
         <div className="header_center">{title}</div>
         <div className="header_right">{rightChild}</div>
       </div>
-      <DiartList />
     </>
   );
 };

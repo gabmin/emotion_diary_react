@@ -1,9 +1,10 @@
-import Button from './button';
+import Button from './Button';
 import { useNavigate } from 'react-router-dom';
 import './DiaryList.css';
 import DiaryItem from './DiaryItem';
+import { DiaryType } from '../types/diaryType';
 
-const DiartList = () => {
+const DiartList = ({ filteredData }: { filteredData: DiaryType[] }) => {
   return (
     <div className="diary-list">
       <div className="menu-bar">
@@ -14,7 +15,9 @@ const DiartList = () => {
         <Button text={'새 일기 쓰기'} type={'POSITIVE'}></Button>
       </div>
       <div className="list_wrapper">
-        <DiaryItem />
+        {filteredData.map((item) => {
+          return <DiaryItem key={item.id} diary={item} />;
+        })}
       </div>
     </div>
   );

@@ -1,12 +1,13 @@
 import './diaryItem.css';
 import { getEmotionImage } from '../utils/emotionImage';
-import Button from './button';
+import Button from './Button';
+import { DiaryType } from '../types/diaryType';
 
-const DiaryItem = (emtionId: number) => {
+const DiaryItem = ({ diary }: { diary: DiaryType }) => {
   return (
     <div className="diary-item">
-      <div className={`imgimg-section-section img-section_${emtionId}`}>
-        <img src={getEmotionImage(emtionId)}></img>
+      <div className={`imgimg-section-section img-section_${diary.emtionId}`}>
+        <img src={getEmotionImage(diary.emtionId)}></img>
       </div>
       <div className="info-section">
         <div className="created-date"></div>
