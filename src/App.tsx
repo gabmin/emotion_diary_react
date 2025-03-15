@@ -7,7 +7,7 @@ import Edit from './pages/Edit';
 import { Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Button from './components/button';
-import { useReducer, useRef } from 'react';
+import { useReducer, useRef, createContext } from 'react';
 import { DiaryType, reducerDiaryType } from './types/daiaryType';
 
 const onClickPrev = () => {
@@ -32,6 +32,9 @@ const reducer = (state: DiaryType[], action: reducerDiaryType) => {
       return state;
   }
 };
+
+const DiaryStateContext = createContext<DiaryType[]>([]);
+const DiaryDispatchContext = createContext({});
 
 function App() {
   const [data, dispatch] = useReducer(reducer, []);
@@ -77,13 +80,23 @@ function App() {
         leftChild={<Button text={'<'} onclick={onClickPrev} />}
         rightChild={<Button text={'>'} onclick={onClicknext} />}
       ></Header>
-      <Routes>
-        <Route path="/" element={<Home />}></Route>
-        <Route path="/new" element={<New />}></Route>
-        <Route path="/dairy/:id" element={<Dairy />}></Route>
-        <Route path="/edit/:id" element={<Edit />}></Route>
-        <Route path="*" element={<NotFound />}></Route>
-      </Routes>
+      <DiaryStateContext.Provider value={data}>
+        <DiaryDispatchContext.Provider
+          value={{
+            onCreate,
+            onUpdate,
+            onDelete,
+          }}
+        >
+          <Routes>
+            <Route path="/" element={<Home />}></Route>
+            <Route path="/new" element={<New />}></Route>
+            <Route path="/dairy/:id" element={<Dairy />}></Route>
+            <Route path="/edit/:id" element={<Edit />}></Route>
+            <Route path="*" element={<NotFound />}></Route>
+          </Routes>
+        </DiaryDispatchContext.Provider>
+      </DiaryStateContext.Provider>
     </>
   );
 }
