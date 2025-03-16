@@ -5,23 +5,43 @@ import Dairy from './pages/Diary';
 import NotFound from './pages/NotFound';
 import Edit from './pages/Edit';
 import { Route, Routes } from 'react-router-dom';
-import { useReducer, useRef, createContext } from 'react';
+import { useReducer, useRef, createContext, useEffect, useState } from 'react';
 import { DiaryType, reducerDiaryType, dispatchType } from './types/diaryType';
 
-const reducer = (state: DiaryType[], action: reducerDiaryType) => {
-  switch (action.type) {
-    case 'CREATE':
-      return [action.data, ...state];
-    case 'UPDATE':
-      return state.map((diary) =>
-        diary.id === action.data.id ? action.data : diary,
-      );
-    case 'DELETE':
-      return state.filter((diary) => diary.id !== action.data.id);
+const isDiaryType = (data: DiaryType | DiaryType[]): data is DiaryType => {
+  return (data as DiaryType).id !== undefined;
+};
 
+const reducer = (state: DiaryType[], action: reducerDiaryType) => {
+  let nextState: DiaryType[];
+
+  switch (action.type) {
+    case 'INIT':
+      return action.data;
+    case 'CREATE':
+      nextState = isDiaryType(action.data) ? [action.data, ...state] : state;
+      break;
+    case 'UPDATE':
+      nextState = state.map((diary) => {
+        if (isDiaryType(action.data)) {
+          return diary.id === action.data.id ? action.data : diary;
+        }
+        return diary;
+      });
+      break;
+    case 'DELETE':
+      nextState = state.filter((diary) => {
+        if (isDiaryType(action.data)) {
+          return diary.id !== action.data.id;
+        }
+      });
+      break;
     default:
       return state;
   }
+
+  localStorage.setItem('diary', JSON.stringify(state));
+  return nextState;
 };
 
 export const DiaryStateContext = createContext<DiaryType[]>([]);
@@ -30,8 +50,29 @@ export const DiaryDispatchContext = createContext<dispatchType>(
 );
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
   const [data, dispatch] = useReducer(reducer, []);
   const idRef = useRef(0);
+
+  useEffect(() => {
+    const localData = localStorage.getItem('diary') ?? '[]';
+    const initDiaryData: DiaryType[] = JSON.parse(localData);
+
+    let maxRef = 0;
+    initDiaryData.forEach((diary) => {
+      if (diary.id > maxRef) {
+        maxRef = diary.id;
+      }
+    });
+
+    idRef.current = maxRef + 1;
+
+    dispatch({
+      type: 'INIT',
+      data: initDiaryData,
+    });
+    setIsLoading(false);
+  }, []);
 
   const onCreate = (content: string, emotionId: number, createdDate: Date) => {
     dispatch({
@@ -65,6 +106,10 @@ function App() {
       },
     });
   };
+
+  if (isLoading) {
+    return <div>로딩중입니다.</div>;
+  }
 
   return (
     <DiaryStateContext.Provider value={data}>

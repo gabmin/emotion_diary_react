@@ -31,7 +31,8 @@ const Home = () => {
 
     return data.filter((item) => {
       if (item.createdDate) {
-        return beginTime <= item.createdDate && item.createdDate <= endTime;
+        const date = new Date(item.createdDate).getTime();
+        return beginTime <= date && date <= endTime;
       }
       return [];
     });

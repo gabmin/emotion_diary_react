@@ -7,7 +7,7 @@ export interface DiaryType {
 
 export interface reducerDiaryType {
   type: string;
-  data: DiaryType;
+  data: DiaryType | DiaryType[];
 }
 
 export interface dispatchType {
