@@ -13,11 +13,14 @@ const isDiaryType = (data: DiaryType | DiaryType[]): data is DiaryType => {
 };
 
 const reducer = (state: DiaryType[], action: reducerDiaryType) => {
-  let nextState: DiaryType[];
+  let nextState: DiaryType[] = [];
 
   switch (action.type) {
     case 'INIT':
-      return action.data;
+      if (!isDiaryType(action.data)) {
+        nextState = action.data;
+      }
+      break;
     case 'CREATE':
       nextState = isDiaryType(action.data) ? [action.data, ...state] : state;
       break;
