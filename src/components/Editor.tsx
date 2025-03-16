@@ -4,29 +4,8 @@ import EmotionItem from './EmotionItem';
 import Button from './Button';
 import { useNavigate } from 'react-router-dom';
 import { DiaryType } from '../types/diaryType';
-
-const emotionList = [
-  {
-    emotionId: 1,
-    emotionName: '완전 좋음',
-  },
-  {
-    emotionId: 2,
-    emotionName: '좋음',
-  },
-  {
-    emotionId: 3,
-    emotionName: '그럭저럭',
-  },
-  {
-    emotionId: 4,
-    emotionName: '나쁨',
-  },
-  {
-    emotionId: 5,
-    emotionName: '끔찍함',
-  },
-];
+import { emotionList } from '../utils/constants';
+import { getStringedDate } from '../utils/dateFormatter';
 
 const Editor = ({
   onSubmit,
@@ -68,22 +47,6 @@ const Editor = ({
       ...input,
       emotionId,
     });
-  };
-
-  const getStringedDate = (targetDate: Date) => {
-    let year: string | number = targetDate.getFullYear();
-    let month: string | number = targetDate.getMonth() + 1;
-    let date: string | number = targetDate.getDate();
-
-    if (month < 10) {
-      month = `0${month}`;
-    }
-
-    if (date < 10) {
-      date = `0${date}`;
-    }
-
-    return `${year}-${month}-${date}`;
   };
 
   const onChangeInput = (

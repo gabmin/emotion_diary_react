@@ -1,22 +1,17 @@
 import Header from '../components/Header';
 import Button from '../components/Button';
 import Editor from '../components/Editor';
-import { useNavigate } from 'react-router-dom';
-import { DiaryDispatchContext, DiaryStateContext } from '../App';
-import { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { DiaryType } from '../types/diaryType';
+import { DiaryDispatchContext } from '../App';
+import { useContext } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import useDiary from '../hooks/useDiary';
 
 const Edit = () => {
+  const data = useContext(DiaryDispatchContext);
   const nav = useNavigate();
   const { id } = useParams();
   const diaryId = Number(id);
-  const data = useContext(DiaryDispatchContext);
-  const diary = useContext(DiaryStateContext);
-
-  const [currentDiaryItem, setCurrentDiaryItem] = useState<DiaryType>(
-    {} as DiaryType,
-  );
+  const currentDiary = useDiary(diaryId);
 
   const onClickUpdate = (content: string, emotionId: number) => {
     if (id) {
@@ -31,16 +26,6 @@ const Edit = () => {
     }
   };
 
-  useEffect(() => {
-    const targetDiary = diary.find((item) => item.id === diaryId);
-    if (!targetDiary) {
-      window.alert('존재하지 않는 일기입니다.');
-      nav('/', { replace: true });
-      return;
-    }
-    setCurrentDiaryItem(targetDiary);
-  }, [diaryId]);
-
   return (
     <>
       <Header
@@ -54,7 +39,7 @@ const Edit = () => {
           ></Button>
         }
       ></Header>
-      <Editor onSubmit={onClickUpdate} data={currentDiaryItem} />
+      <Editor onSubmit={onClickUpdate} data={currentDiary} />
     </>
   );
 };
