@@ -1,9 +1,9 @@
 import Button from './Button';
 import { useNavigate } from 'react-router-dom';
-import './DiaryList.css';
 import DiaryItem from './DiaryItem';
 import { DiaryType } from '../types/diaryType';
 import { ChangeEvent, useState } from 'react';
+import { css } from '@emotion/react';
 
 const DiartList = ({ filteredData }: { filteredData: DiaryType[] }) => {
   const nav = useNavigate();
@@ -27,9 +27,29 @@ const DiartList = ({ filteredData }: { filteredData: DiaryType[] }) => {
   };
 
   return (
-    <div className="diary-list">
-      <div className="menu-bar">
-        <select value={sortType} onChange={onChangeSortType}>
+    <>
+      <div
+        css={css`
+          margin: 20px 0;
+          display: flex;
+          gap: 10px;
+          button {
+            flex: 1;
+          }
+        `}
+      >
+        <select
+          css={css`
+            background-color: rgb(236, 236, 236);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 18px;
+          `}
+          value={sortType}
+          onChange={onChangeSortType}
+        >
           <option value={'latest'}>최신순</option>
           <option value={'oldest'}>오래된 순</option>
         </select>
@@ -44,7 +64,7 @@ const DiartList = ({ filteredData }: { filteredData: DiaryType[] }) => {
           return <DiaryItem key={item.id} diary={item} />;
         })}
       </div>
-    </div>
+    </>
   );
 };
 

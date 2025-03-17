@@ -1,4 +1,4 @@
-import './Button.css';
+import { css } from '@emotion/react';
 
 const Button = ({
   text,
@@ -10,7 +10,27 @@ const Button = ({
   onclick: () => void | Promise<void>;
 }) => {
   return (
-    <button className={`button ${type}`} onClick={onclick}>
+    <button
+      className={`${type}`}
+      css={css`
+        background-color: rgb(236, 236, 236);
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 18px;
+        white-space: nowrap;
+        &.POSITIVE {
+          background-color: rgb(100, 201, 100);
+          color: white;
+        }
+        &.NEGATIVE {
+          background-color: rgb(253, 86, 95);
+          color: white;
+        }
+      `}
+      onClick={onclick}
+    >
       {text}
     </button>
   );

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import './Editor.css';
 import EmotionItem from './EmotionItem';
 import Button from './Button';
 import { useNavigate } from 'react-router-dom';
 import { DiaryType } from '../types/diaryType';
 import { emotionList } from '../utils/constants';
 import { getStringedDate } from '../utils/dateFormatter';
+import { css } from '@emotion/react';
 
 const Editor = ({
   onSubmit,
@@ -71,10 +71,34 @@ const Editor = ({
   };
 
   return (
-    <div className="editor">
-      <section className="date-section">
+    <div
+      css={css`
+        section {
+          margin-bottom: 40px;
+        }
+      `}
+    >
+      <section
+        css={css`
+          input,
+          textarea {
+            background-color: rgb(236, 236, 236);
+            border: none;
+            border-radius: 5px;
+            font-size: 20px;
+            padding: 10px 20px;
+          }
+        `}
+      >
         <h4>오늘의 날짜</h4>
         <input
+          css={css`
+            background-color: rgb(236, 236, 236);
+            border: none;
+            border-radius: 5px;
+            font-size: 20px;
+            padding: 10px 20px;
+          `}
           name="createdDate"
           type="date"
           value={getStringedDate(input.createdDate)}
@@ -83,7 +107,13 @@ const Editor = ({
       </section>
       <section className="emotion-section">
         <h4>오늘의 감정</h4>
-        <div className="emotion-list-wrapper">
+        <div
+          css={css`
+            display: flex;
+            justify-content: space-around;
+            gap: 2%;
+          `}
+        >
           {emotionList.map((emotion) => (
             <EmotionItem
               key={emotion.emotionId}
@@ -98,12 +128,24 @@ const Editor = ({
       <section className="content-section">
         <h4>오늘의 일기</h4>
         <textarea
+          css={css`
+            padding: 20px;
+            width: 100%;
+            min-height: 200px;
+            resize: vertical;
+            box-sizing: border-box;
+          `}
           name="content"
           value={input.content}
           onChange={onChangeInput}
         ></textarea>
       </section>
-      <section className="button-section">
+      <section
+        css={css`
+          display: flex;
+          justify-content: space-between;
+        `}
+      >
         <Button text={'취소하기'} onclick={() => nav(-1)}></Button>
         <Button
           text={'작성완료'}

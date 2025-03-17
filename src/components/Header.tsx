@@ -1,5 +1,5 @@
+import { css } from '@emotion/react';
 import { JSX } from 'react';
-import './Header.css';
 
 const Header = ({
   title,
@@ -12,10 +12,42 @@ const Header = ({
 }) => {
   return (
     <>
-      <div className="header">
-        <div className="header_left">{leftChild}</div>
-        <div className="header_center">{title}</div>
-        <div className="header_right">{rightChild}</div>
+      <div
+        css={css`
+          display: flex;
+          align-items: center;
+          padding: 20px 0px;
+          border-bottom: 1px solid rgb(226, 226, 226);
+          div {
+            display: flex;
+          }
+        `}
+      >
+        <div
+          css={css`
+            width: 25%;
+            justify-content: flex-start;
+          `}
+        >
+          {leftChild}
+        </div>
+        <div
+          css={css`
+            width: 50%;
+            font-size: 25px;
+            justify-content: center;
+          `}
+        >
+          {title}
+        </div>
+        <div
+          css={css`
+            width: 25%;
+            justify-content: flex-end;
+          `}
+        >
+          {rightChild}
+        </div>
       </div>
     </>
   );
