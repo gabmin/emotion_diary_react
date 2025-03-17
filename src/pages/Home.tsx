@@ -1,12 +1,12 @@
 import Header from '../components/Header';
 import Button from '../components/Button';
 import DiaryList from '../components/DiaryList';
-import { useState, useContext } from 'react';
-import { DiaryStateContext } from '../App';
+import { useState } from 'react';
+import { useStateContext } from '../hooks/useStateContext';
 import { DiaryType } from '../types/diaryType';
 
 const Home = () => {
-  const data = useContext(DiaryStateContext);
+  const { data } = useStateContext();
 
   const [pivotDate, setPivotDate] = useState(new Date());
 

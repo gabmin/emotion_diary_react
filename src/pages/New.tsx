@@ -2,19 +2,18 @@ import Header from '../components/Header';
 import Button from '../components/Button';
 import Editor from '../components/Editor';
 import { useNavigate } from 'react-router-dom';
-import { DiaryDispatchContext } from '../App';
-import { useContext } from 'react';
+import { useStateContext } from '../hooks/useStateContext';
 
 const New = () => {
   const nav = useNavigate();
-  const data = useContext(DiaryDispatchContext);
+  const { onCreate } = useStateContext();
 
   const onClickCreate = (
     content: string,
     emotionId: number,
     createdDate: Date,
   ) => {
-    data.onCreate(content, emotionId, createdDate);
+    onCreate(content, emotionId, createdDate);
   };
 
   return (

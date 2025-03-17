@@ -1,13 +1,12 @@
 import Header from '../components/Header';
 import Button from '../components/Button';
 import Editor from '../components/Editor';
-import { DiaryDispatchContext } from '../App';
-import { useContext } from 'react';
+import { useStateContext } from '../hooks/useStateContext';
 import { useNavigate, useParams } from 'react-router-dom';
 import useDiary from '../hooks/useDiary';
 
 const Edit = () => {
-  const data = useContext(DiaryDispatchContext);
+  const { onUpdate, onDelete } = useStateContext();
   const nav = useNavigate();
   const { id } = useParams();
   const diaryId = Number(id);
@@ -15,13 +14,13 @@ const Edit = () => {
 
   const onClickUpdate = (content: string, emotionId: number) => {
     if (id) {
-      data.onUpdate(content, emotionId, diaryId);
+      onUpdate(content, emotionId, diaryId);
     }
   };
 
   const onClickDelete = () => {
     if (window.confirm('일기를 정말 삭제할까요? 다시 복구되지 않아요!')) {
-      data.onDelete(diaryId);
+      onDelete(diaryId);
       nav('/', { replace: true });
     }
   };

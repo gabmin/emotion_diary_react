@@ -15,3 +15,8 @@ export interface dispatchType {
   onUpdate: (content: string, id: number, emotionId: number) => void;
   onDelete: (id: number) => void;
 }
+
+export interface contextType extends dispatchType {
+  data: DiaryType[];
+  isLoading: boolean;
+}
