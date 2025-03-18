@@ -2,11 +2,11 @@ import Header from '../components/Header';
 import Button from '../components/Button';
 import Editor from '../components/Editor';
 import { useNavigate } from 'react-router-dom';
-import { useStateContext } from '../hooks/useStateContext';
+import { useDispatchContext } from '../hooks/useStateContext';
 
 const New = () => {
   const nav = useNavigate();
-  const { onCreate } = useStateContext();
+  const { onCreate } = useDispatchContext();
 
   const onClickCreate = (
     content: string,

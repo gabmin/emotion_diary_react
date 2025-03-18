@@ -16,7 +16,7 @@ export interface dispatchType {
   onDelete: (id: number) => void;
 }
 
-export interface contextType extends dispatchType {
+export interface stateType {
   data: DiaryType[];
   isLoading: boolean;
 }

@@ -1,6 +1,7 @@
 import {
   createContext,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -8,19 +9,33 @@ import {
   useRef,
   useState,
 } from 'react';
-import { contextType, DiaryType, reducerDiaryType } from '../types/diaryType';
+import {
+  DiaryType,
+  dispatchType,
+  reducerDiaryType,
+  stateType,
+} from '../types/diaryType';
 
 const isDiaryType = (data: DiaryType | DiaryType[]): data is DiaryType => {
   return (data as DiaryType).id !== undefined;
 };
 
-const DiaryStateContext = createContext<contextType>({} as contextType);
+const DiaryStateContext = createContext<stateType>({
+  data: [],
+  isLoading: false,
+});
+const DiaryDispatchContext = createContext<dispatchType>({} as dispatchType);
 
 export const useStateContext = () => {
-  const { data, isLoading, onCreate, onUpdate, onDelete } =
-    useContext(DiaryStateContext);
+  const { data, isLoading } = useContext(DiaryStateContext);
 
-  return { data, isLoading, onCreate, onUpdate, onDelete };
+  return { data, isLoading };
+};
+
+export const useDispatchContext = () => {
+  const { onCreate, onUpdate, onDelete } = useContext(DiaryDispatchContext);
+
+  return { onCreate, onUpdate, onDelete };
 };
 
 export const StateProvider = ({ children }: { children: ReactNode }) => {
@@ -63,41 +78,52 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
 
   const [data, dispatch] = useReducer(reducer, []);
 
-  const dispatchAction = useMemo(
-    () => ({
-      onCreate: (content: string, emotionId: number, createdDate: Date) => {
-        dispatch({
-          type: 'CREATE',
-          data: {
-            id: idRef.current++,
-            createdDate,
-            emotionId,
-            content,
-          },
-        });
-      },
-      onUpdate: (content: string, emotionId: number, id: number) => {
-        dispatch({
-          type: 'UPDATE',
-          data: {
-            id,
-            createdDate: new Date().getTime(),
-            emotionId,
-            content,
-          },
-        });
-      },
-      onDelete: (id: number) => {
-        dispatch({
-          type: 'DELETE',
-          data: {
-            id,
-          },
-        });
-      },
-    }),
-    [data],
+  const onCreate = useCallback(
+    (content: string, emotionId: number, createdDate: Date) => {
+      dispatch({
+        type: 'CREATE',
+        data: {
+          id: idRef.current++,
+          createdDate,
+          emotionId,
+          content,
+        },
+      });
+    },
+    [dispatch],
   );
+
+  const onUpdate = useCallback(
+    (content: string, emotionId: number, id: number) => {
+      dispatch({
+        type: 'UPDATE',
+        data: {
+          id,
+          createdDate: new Date().getTime(),
+          emotionId,
+          content,
+        },
+      });
+    },
+    [dispatch],
+  );
+
+  const onDelete = useCallback(
+    (id: number) => {
+      dispatch({
+        type: 'DELETE',
+        data: {
+          id,
+        },
+      });
+    },
+    [dispatch],
+  );
+  const dispatchAction = {
+    onCreate,
+    onUpdate,
+    onDelete,
+  };
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -121,12 +147,13 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading(false);
   }, []);
 
-  const value = {
-    data,
-    isLoading,
-    ...dispatchAction,
-  };
-  return <DiaryStateContext value={value}>{children}</DiaryStateContext>;
+  return (
+    <DiaryStateContext value={{ data, isLoading }}>
+      <DiaryDispatchContext value={dispatchAction}>
+        {children}
+      </DiaryDispatchContext>
+    </DiaryStateContext>
+  );
 };
 
 export default {

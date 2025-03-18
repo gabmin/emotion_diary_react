@@ -1,12 +1,13 @@
 import Header from '../components/Header';
 import Button from '../components/Button';
 import Editor from '../components/Editor';
-import { useStateContext } from '../hooks/useStateContext';
+import { useDispatchContext } from '../hooks/useStateContext';
 import { useNavigate, useParams } from 'react-router-dom';
 import useDiary from '../hooks/useDiary';
+import { memo } from 'react';
 
 const Edit = () => {
-  const { onUpdate, onDelete } = useStateContext();
+  const { onUpdate, onDelete } = useDispatchContext();
   const nav = useNavigate();
   const { id } = useParams();
   const diaryId = Number(id);
@@ -25,6 +26,9 @@ const Edit = () => {
     }
   };
 
+  const MemorizedEditor = memo(() => (
+    <Editor onSubmit={onClickUpdate} data={currentDiary} />
+  ));
   return (
     <>
       <Header
@@ -38,7 +42,7 @@ const Edit = () => {
           ></Button>
         }
       ></Header>
-      <Editor onSubmit={onClickUpdate} data={currentDiary} />
+      <MemorizedEditor />
     </>
   );
 };
