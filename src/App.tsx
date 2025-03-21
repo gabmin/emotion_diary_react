@@ -9,7 +9,11 @@ import { GlobalPortal } from './GlobalPortal';
 function App() {
   const { isLoading } = useStateContext();
   if (isLoading) {
-    return <div>로딩중입니다.</div>;
+    return (
+      <div>
+        <h1>로딩중입니다.</h1>
+      </div>
+    );
   }
 
   return (
