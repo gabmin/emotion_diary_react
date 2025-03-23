@@ -25,7 +25,7 @@ const Header = ({
       >
         <div
           css={css`
-            width: 25%;
+            width: 100%;
             justify-content: flex-start;
           `}
         >
