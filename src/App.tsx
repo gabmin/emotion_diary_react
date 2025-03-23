@@ -12,6 +12,7 @@ function App() {
     return (
       <div>
         <h1>로딩중입니다.</h1>
+        <h2>잠시만 기다려주세요..</h2>
       </div>
     );
   }
