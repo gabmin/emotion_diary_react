@@ -7,13 +7,13 @@ import {
   useReducer,
   useRef,
   useState,
-} from 'react';
+} from "react";
 import {
   DiaryType,
   dispatchType,
   reducerDiaryType,
   stateType,
-} from '../types/diaryType';
+} from "../types/diaryType";
 
 const isDiaryType = (data: DiaryType | DiaryType[]): data is DiaryType => {
   return (data as DiaryType).id !== undefined;
@@ -44,15 +44,15 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
     let nextState: DiaryType[] = [];
 
     switch (action.type) {
-      case 'INIT':
+      case "INIT":
         if (!isDiaryType(action.data)) {
           nextState = action.data;
         }
         break;
-      case 'CREATE':
+      case "CREATE":
         nextState = isDiaryType(action.data) ? [action.data, ...state] : state;
         break;
-      case 'UPDATE':
+      case "UPDATE":
         nextState = state.map((diary) => {
           if (isDiaryType(action.data)) {
             return diary.id === action.data.id ? action.data : diary;
@@ -60,7 +60,7 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
           return diary;
         });
         break;
-      case 'DELETE':
+      case "DELETE":
         nextState = state.filter((diary) => {
           if (isDiaryType(action.data)) {
             return diary.id !== action.data.id;
@@ -71,7 +71,7 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
         return state;
     }
 
-    localStorage.setItem('diary', JSON.stringify(state));
+    localStorage.setItem("diary", JSON.stringify(state));
     return nextState;
   };
 
@@ -80,7 +80,7 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
   const onCreate = useCallback(
     (content: string, emotionId: number, createdDate: Date) => {
       dispatch({
-        type: 'CREATE',
+        type: "CREATE",
         data: {
           id: idRef.current++,
           createdDate,
@@ -95,7 +95,7 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
   const onUpdate = useCallback(
     (content: string, emotionId: number, id: number) => {
       dispatch({
-        type: 'UPDATE',
+        type: "UPDATE",
         data: {
           id,
           createdDate: new Date().getTime(),
@@ -110,7 +110,7 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
   const onDelete = useCallback(
     (id: number) => {
       dispatch({
-        type: 'DELETE',
+        type: "DELETE",
         data: {
           id,
         },
@@ -127,7 +127,7 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const localData = localStorage.getItem('diary') ?? '[]';
+    const localData = localStorage.getItem("diary") ?? "[]";
     const initDiaryData: DiaryType[] = JSON.parse(localData);
 
     let maxRef = 0;
@@ -140,18 +140,18 @@ export const StateProvider = ({ children }: { children: ReactNode }) => {
     idRef.current = maxRef + 1;
 
     dispatch({
-      type: 'INIT',
+      type: "INIT",
       data: initDiaryData,
     });
     setIsLoading(false);
   }, []);
 
   return (
-    <DiaryStateContext value={{ data, isLoading }}>
-      <DiaryDispatchContext value={dispatchAction}>
+    <DiaryStateContext.Provider value={{ data, isLoading }}>
+      <DiaryDispatchContext.Provider value={dispatchAction}>
         {children}
-      </DiaryDispatchContext>
-    </DiaryStateContext>
+      </DiaryDispatchContext.Provider>
+    </DiaryStateContext.Provider>
   );
 };
 
